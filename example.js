@@ -1,9 +1,9 @@
 const Koa = require('koa');
-const RR = require('./index');
+const RE = require('./index');
 
 const app = new Koa();
 
-const model = {
+const controller = {
   list(ctx) {
     ctx.body = 'user.list';
   },
@@ -21,8 +21,8 @@ const model = {
   },
 };
 
-app.use(RR({
-  model,
+app.use(RE({
+  controller,
   name: 'user',
   index: ':username(\\w+)',
 }));

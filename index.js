@@ -4,8 +4,8 @@ const Compose = require('koa-compose');
 function buildOptions(optsIn) {
   const result = optsIn;
 
-  if (!result.model || typeof result.model !== 'object') {
-    throw new TypeError('model must be set as js object');
+  if (!result.controller || typeof result.controller !== 'object') {
+    throw new TypeError('controller must be set as js object');
   }
   if (!result.urls && !result.name) throw new TypeError('name needed if urls not present');
   if ((result.name && (typeof result.name !== 'string') && !Array.isArray(result.name)) ||
@@ -76,7 +76,7 @@ function buildOptions(optsIn) {
   return result;
 }
 
-function buildRoutes(model, urls) {
+function buildRoutes(controller, urls) {
   let result = [];
   urls.forEach((element) => {
     result = result.concat(element.handlers.map((handler) => {
@@ -86,7 +86,7 @@ function buildRoutes(model, urls) {
       if (keys.length !== 1) throw new TypeError('multiple keys in route handler');
       [method] = keys;
       route.method = method.toLowerCase();
-      route.handler = model[handler[method]];
+      route.handler = controller[handler[method]];
       if (route.method === 'delete') route.method = 'del';
       route.path = element.path;
       return route;
@@ -97,7 +97,7 @@ function buildRoutes(model, urls) {
 
 module.exports = (opts) => {
   const routeOpts = buildOptions(opts);
-  const routes = buildRoutes(routeOpts.model, routeOpts.urls);
+  const routes = buildRoutes(routeOpts.controller, routeOpts.urls);
   const funcs = routes.map(data => Router[data.method](data.path, data.handler));
   return Compose(funcs);
 };
