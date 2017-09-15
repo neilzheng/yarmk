@@ -182,12 +182,11 @@ app.use(RR{
 
 ## Suggested usage for microservices:
 
-a. Folow 1. and 2., use default config.
-b. Only one model is suggested in one app.
-c. Keep protocol as HTTP. If HTTPS is needed, use proxy/load balancer.
-d. Use koa middlewares as needed.
-e. We don't touch request/response, so if you want if for regular web APP, help yourself.
-   It's just no benifits seen here.
+* Folow 1. and 2., use default config.
+* Only one model is suggested in one app.
+* Keep protocol as HTTP. If HTTPS is needed, use proxy/load balancer.
+* Use koa middlewares as needed.
+* We don't touch request/response, so if you want if for regular web APP, help yourself. Just no benifits seen here.
 
 ## License
 
