@@ -174,7 +174,7 @@ app.use(RR{
   {
     path: '/logout',
     handlers: [{
-      'GET': logout',
+      'GET': 'logout',
     }],
   }],
 })
