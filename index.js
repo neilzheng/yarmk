@@ -4,7 +4,9 @@ const Compose = require('koa-compose');
 function buildOptions(optsIn) {
   const result = optsIn;
 
-  if (!result.model || typeof result.model !== 'object') throw new TypeError('model must be set as js object');
+  if (!result.model || typeof result.model !== 'object') {
+    throw new TypeError('model must be set as js object');
+  }
   if (!result.urls && !result.name) throw new TypeError('name needed if urls not present');
   if ((result.name && (typeof result.name !== 'string') && !Array.isArray(result.name)) ||
     (result.index && typeof result.index !== 'string')) {
@@ -20,10 +22,13 @@ function buildOptions(optsIn) {
       }
     });
   }
-  if (result.urls && (!Array.isArray(result.urls) || result.urls.length === 0)) throw new TypeError('urls must be a non-empty array');
+  if (result.urls && (!Array.isArray(result.urls) || result.urls.length === 0)) {
+    throw new TypeError('urls must be a non-empty array');
+  }
   if (result.urls) {
     result.urls.forEach((data) => {
-      if (!data.path || typeof data.path !== 'string' || !Array.isArray(data.handlers) || data.handlers.length === 0) {
+      if (!data.path || typeof data.path !== 'string' ||
+          !Array.isArray(data.handlers) || data.handlers.length === 0) {
         throw new TypeError('path must be a string, handlers must be non-empty array');
       }
     });

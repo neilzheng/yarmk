@@ -5,11 +5,11 @@ Koa middleware to help build restful microservices. It is based on koa-route and
 ## Idea
 In RESET URLs, most endpoints have these patterns:
 
-list:   GET /users
-create: POST /users
-fetch:  GET /user/:id
-update: PUT /user/:id
-remove: DELETE /user/:id
+* list:   GET /users
+* create: POST /users
+* fetch:  GET /user/:id
+* update: PUT /user/:id
+* remove: DELETE /user/:id
 
 So, we make this our default rule for designing REST API.
 
