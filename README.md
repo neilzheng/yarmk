@@ -44,9 +44,11 @@ Methods are optional, implement the ones needed.
 By default, each controller provides two url matches, one for list/create (plural), one singular form for others. Example for users:
 
 ```js
-const app = require('koa')
+const Koa = require('koa')
 const RE = require('koa-minires')
 const User = require('./controllers/user')
+
+const app = new Koa()
 
 /*
  resulting
@@ -154,9 +156,11 @@ module.exports = {
 }
 
 /*app*/
-const app = require('koa')
+const Koa = require('koa')
 const RE = require('minires')
 const Auth = require('./controllers/auth')
+
+const app = new Koa()
 
 /*
  resulting 
@@ -166,15 +170,15 @@ const Auth = require('./controllers/auth')
 app.use(RE{
   controller: Auth,
   urls: [{
-    path: '/login',
+    path: '/auth/login',
     handlers: [{
-      'POST': 'login',
+      POST: 'login',
     }],
   },
   {
-    path: '/logout',
+    path: '/auth/logout',
     handlers: [{
-      'GET': 'logout',
+      GET: 'logout',
     }],
   }],
 })
