@@ -60,7 +60,7 @@ function buildOptions(optsIn) {
           GET: 'fetch',
         },
         {
-          PUT: 'update',
+          PATCH: 'update',
         },
         {
           DELETE: 'remove',

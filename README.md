@@ -8,7 +8,7 @@ In RESET URLs, most endpoints have these patterns:
 * list:   GET /users
 * create: POST /users
 * fetch:  GET /user/:id
-* update: PUT /user/:id
+* update: PATCH /user/:id
 * remove: DELETE /user/:id
 
 So, we make this our default rule for designing REST API.
@@ -152,7 +152,7 @@ const fullOptions = {
           GET: 'fetch',
         },
         {
-          PUT: 'update',
+          PATCH: 'update',
         },
         {
           DELETE: 'remove',
