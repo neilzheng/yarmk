@@ -2,10 +2,20 @@ const Router = require('koa-route');
 const Compose = require('koa-compose');
 
 function buildOptions(optsIn) {
-  const result = optsIn;
+  let result = optsIn;
 
-  if (!result.controller || typeof result.controller !== 'object') {
-    throw new TypeError('controller must be set as js object');
+  if (!result || (typeof result !== 'function' && typeof result !== 'object')) {
+    throw new TypeError('options must be an object or es6 class');
+  }
+  if (typeof result === 'function') {
+    result = {
+      controller: result,
+      name: result.name,
+    };
+  }
+  if (!result.controller ||
+      (typeof result.controller !== 'object' && typeof result.controller !== 'function')) {
+    throw new TypeError('controller must be set as js object or es6 class');
   }
   if (!result.urls && !result.name) throw new TypeError('name needed if urls not present');
   if ((result.name && (typeof result.name !== 'string') && !Array.isArray(result.name)) ||
@@ -28,7 +38,7 @@ function buildOptions(optsIn) {
   if (result.urls) {
     result.urls.forEach((data) => {
       if (!data.path || typeof data.path !== 'string' ||
-          !Array.isArray(data.handlers) || data.handlers.length === 0) {
+        !Array.isArray(data.handlers) || data.handlers.length === 0) {
         throw new TypeError('path must be a string, handlers must be non-empty array');
       }
     });
@@ -77,6 +87,20 @@ function buildOptions(optsIn) {
 }
 
 function buildRoutes(controller, urls) {
+  const makeHandler = (method) => {
+    if (typeof controller === 'function') {
+      if (method === 'constructor') throw new TypeError('cannot use constructor as handler');
+      const Ctr = controller;
+      return (ctx, ...args) => { // first argument is ctx
+        const instance = new Ctr();
+        instance.ctx = ctx;
+        // first argument needs to be this
+        return controller.prototype[method].apply(instance, args);
+      };
+    }
+    return controller[method];
+  };
+
   let result = [];
   urls.forEach((element) => {
     result = result.concat(element.handlers.map((handler) => {
@@ -86,7 +110,7 @@ function buildRoutes(controller, urls) {
       if (keys.length !== 1) throw new TypeError('multiple keys in route handler');
       [method] = keys;
       route.method = method.toLowerCase();
-      route.handler = controller[handler[method]];
+      route.handler = makeHandler(handler[method]);
       if (route.method === 'delete') route.method = 'del';
       route.path = element.path;
       return route;
