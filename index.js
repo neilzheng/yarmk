@@ -14,7 +14,7 @@ function buildOptions(optsIn) {
     };
   }
   if (!result.controller ||
-      (typeof result.controller !== 'object' && typeof result.controller !== 'function')) {
+    (typeof result.controller !== 'object' && typeof result.controller !== 'function')) {
     throw new TypeError('controller must be set as js object or es6 class');
   }
   if (!result.urls && !result.name) throw new TypeError('name needed if urls not present');
@@ -90,12 +90,13 @@ function buildRoutes(Controller, urls) {
   const makeHandler = (method) => {
     if (typeof Controller === 'function') {
       if (method === 'constructor') throw new TypeError('cannot use constructor as handler');
-      return (ctx, ...args) => { // first argument is ctx
+      const handlerMethod = Controller.prototype[method];
+      return typeof handlerMethod === 'function' ? (ctx, ...args) => { // first argument is ctx
         const instance = new Controller();
         instance.ctx = ctx;
         // first argument needs to be this
         return Controller.prototype[method].apply(instance, args);
-      };
+      } : undefined;
     }
     return Controller[method];
   };
