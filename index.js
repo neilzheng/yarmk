@@ -90,8 +90,8 @@ function buildRoutes(Controller, urls) {
   const makeHandler = (method) => {
     if (typeof Controller === 'function') {
       if (method === 'constructor') throw new TypeError('cannot use constructor as handler');
-      const instance = new Controller();
       return (ctx, ...args) => { // first argument is ctx
+        const instance = new Controller();
         instance.ctx = ctx;
         // first argument needs to be this
         return Controller.prototype[method].apply(instance, args);
