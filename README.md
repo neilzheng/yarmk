@@ -39,6 +39,7 @@ module.exports = {
 
 With es6 class:
 
+`Don't save application data in "this", it won't survive across requests`
 ```js
 module.exports = class User {
   list() {
@@ -134,11 +135,12 @@ const fullOptions = {
   /*The Controller, REQUIRED*/
   controller: User,
   /*Endpoint Path for building URL, optional*/
-  /*Required without urls, ignored if urls specified''*/
+  /*Required if controller is not es6 class and urls not set*/
+  /*Ignored if urls set''*/
   name: 'user',
   /*Index for Fetching Single Object, optional*/
   /*Default is ':id(\\d+)'*/
-  /*Ignored if urls specified*/
+  /*Ignored if urls set*/
   index: ':id(\\d+)',
   /*Routes, optional, default as folowing code*/
   urls: [{
