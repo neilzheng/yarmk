@@ -1,7 +1,7 @@
 {
-  "name": "koa-minires",
+  "name": "yarmk",
   "version": "0.0.1",
-  "description": "Koa restful microservices middleware",
+  "description": "Yet Another Restful api Middleware for Koa",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node example.js"
