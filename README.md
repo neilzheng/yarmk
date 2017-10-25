@@ -1,4 +1,4 @@
-# koa-minires
+# Yet Another Restful api Middleware for Koa
 
 Koa middleware to help build restful microservices. It is based on koa-route and koa-compose.
 
@@ -72,7 +72,7 @@ By default, each controller provides two url matches, one for list/create (plura
 
 ```js
 const Koa = require('koa')
-const RE = require('koa-minires')
+const RE = require('YARMK')
 const User = require('./controllers/user')
 
 const app = new Koa()
