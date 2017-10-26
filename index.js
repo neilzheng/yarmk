@@ -45,7 +45,7 @@ function buildOptions(optsIn) {
   }
 
   if (!result.urls) {
-    if (!result.index) result.index = ':id(\\d+)';
+    if (!result.index) result.index = ':id([\\w\\-\\_]+)';
     let names = [];
     if (typeof result.name === 'string') {
       names = [`/${result.name}/${result.index}`, `/${result.name}s`];

@@ -72,7 +72,7 @@ By default, each controller provides two url matches, one for list/create (plura
 
 ```js
 const Koa = require('koa')
-const RE = require('YARMK')
+const RE = require('yarmk')
 const User = require('./controllers/user')
 
 const app = new Koa()
