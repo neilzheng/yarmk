@@ -4,11 +4,9 @@ const RE = require('./index');
 const app = new Koa();
 
 class User {
-  /*
   list() {
     this.ctx.body = 'user.list';
   }
-  */
 
   create() {
     this.ctx.body = 'user.create';

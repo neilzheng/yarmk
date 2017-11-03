@@ -5,8 +5,8 @@ Koa middleware to help build restful microservices. It is based on koa-route and
 ## Idea
 In RESET URLs, most endpoints have these patterns:
 
-* list:   GET /users
-* create: POST /users
+* list:   GET /user
+* create: POST /user
 * fetch:  GET /user/:id
 * update: PATCH /user/:id
 * remove: DELETE /user/:id
@@ -80,7 +80,7 @@ const app = new Koa()
 /*
  resulting
  /user/:id
- /users
+ /user
 */
 const options = {
   /*handlers*/
@@ -93,15 +93,6 @@ const options = {
   controller: User,
   name: 'user',
   index: ':username(\\w+)',
-}
-
-/*for heroes
- /hero/:id
- /heroes
-*/
-const options = {
-  controller: User,
-  name: ['hero', 'heroes'],
 }
 
 app.use(RE(options))
@@ -162,7 +153,7 @@ const fullOptions = {
       ],
     },
     {
-      path: '/users',
+      path: '/user',
       handlers: [
         {
           POST: 'create',

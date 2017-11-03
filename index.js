@@ -18,19 +18,9 @@ function buildOptions(optsIn) {
     throw new TypeError('controller must be set as js object or es6 class');
   }
   if (!result.urls && !result.name) throw new TypeError('name needed if urls not present');
-  if ((result.name && (typeof result.name !== 'string') && !Array.isArray(result.name)) ||
+  if ((result.name && (typeof result.name !== 'string')) ||
     (result.index && typeof result.index !== 'string')) {
-    throw new TypeError('name must be string or array of strings & index must be string');
-  }
-  if (result.name && Array.isArray(result.name)) {
-    if (result.name.length === 0) {
-      throw new TypeError('name is empty array');
-    }
-    result.name.forEach((data) => {
-      if (typeof data !== 'string') {
-        throw new TypeError('name must be string or array of strings');
-      }
-    });
+    throw new TypeError('name must be a string & index must be string');
   }
   if (result.urls && (!Array.isArray(result.urls) || result.urls.length === 0)) {
     throw new TypeError('urls must be a non-empty array');
@@ -46,12 +36,7 @@ function buildOptions(optsIn) {
 
   if (!result.urls) {
     if (!result.index) result.index = ':id([\\w\\-\\_]+)';
-    let names = [];
-    if (typeof result.name === 'string') {
-      names = [`/${result.name}/${result.index}`, `/${result.name}s`];
-    } else { // should be an array
-      names = [`/${result.name[0]}/${result.index}`, `/${result.name[1]}`];
-    }
+    const names = [`/${result.name}/${result.index}`, `/${result.name}`];
     result.urls = [];
     const url1 = {
       path: names[0],
