@@ -140,28 +140,18 @@ const fullOptions = {
       /*Default to be build by name+index*/
       path: '/user/:id(\\d+)',
       /*reqired in urls*/
-      handlers: [
-        {
-          GET: 'fetch',
-        },
-        {
-          PATCH: 'update',
-        },
-        {
-          DELETE: 'remove',
-        },
-      ],
+      handlers: {
+        GET: 'fetch',
+        PATCH: 'update',
+        DELETE: 'remove'
+      },
     },
     {
       path: '/user',
-      handlers: [
-        {
-          POST: 'create',
-        },
-        {
-          GET: 'list',
-        },
-      ],
+      handlers: {
+        POST: 'create',
+        GET: 'list'
+      },
     },
   ],
 }
@@ -187,7 +177,7 @@ module.exports = {
 
 /*app*/
 const Koa = require('koa')
-const RE = require('minires')
+const RE = require('yarmk')
 const Auth = require('./controllers/auth')
 
 const app = new Koa()
@@ -201,15 +191,15 @@ app.use(RE{
   controller: Auth,
   urls: [{
     path: '/auth/login',
-    handlers: [{
+    handlers: {
       POST: 'login',
-    }],
+    },
   },
   {
     path: '/auth/logout',
-    handlers: [{
+    handlers: {
       GET: 'logout',
-    }],
+    },
   }],
 })
 ```

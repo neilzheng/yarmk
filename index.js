@@ -28,8 +28,8 @@ function buildOptions(optsIn) {
   if (result.urls) {
     result.urls.forEach((data) => {
       if (!data.path || typeof data.path !== 'string' ||
-        !Array.isArray(data.handlers) || data.handlers.length === 0) {
-        throw new TypeError('path must be a string, handlers must be non-empty array');
+        typeof data.handlers !== 'object') {
+        throw new TypeError('path must be a string, handlers must be methods keyed object');
       }
     });
   }
@@ -40,28 +40,18 @@ function buildOptions(optsIn) {
     result.urls = [];
     const url1 = {
       path: names[0],
-      handlers: [
-        {
-          GET: 'fetch',
-        },
-        {
-          PATCH: 'update',
-        },
-        {
-          DELETE: 'remove',
-        },
-      ],
+      handlers: {
+        GET: 'fetch',
+        PATCH: 'update',
+        DELETE: 'remove',
+      },
     };
     const url2 = {
       path: names[1],
-      handlers: [
-        {
-          POST: 'create',
-        },
-        {
-          GET: 'list',
-        },
-      ],
+      handlers: {
+        POST: 'create',
+        GET: 'list',
+      },
     };
 
     result.urls.push(url1);
@@ -88,14 +78,11 @@ function buildRoutes(Controller, urls) {
 
   let result = [];
   urls.forEach((element) => {
-    result = result.concat(element.handlers.map((handler) => {
+    const methods = Object.keys(element.handlers);
+    result = result.concat(methods.map((method) => {
       const route = {};
-      const keys = Object.keys(handler);
-      let method = '';
-      if (keys.length !== 1) throw new TypeError('multiple keys in route handler');
-      [method] = keys;
       route.method = method.toLowerCase();
-      route.handler = makeHandler(handler[method]);
+      route.handler = makeHandler(element.handlers[method]);
       if (route.method === 'delete') route.method = 'del';
       route.path = element.path;
       return route;
