@@ -2,20 +2,14 @@ const Router = require('koa-route');
 const Compose = require('koa-compose');
 
 function buildOptions(optsIn) {
-  let result = optsIn;
+  const result = optsIn;
 
-  if (!result || (typeof result !== 'function' && typeof result !== 'object')) {
-    throw new TypeError('options must be an object or es6 class');
-  }
-  if (typeof result === 'function') {
-    result = {
-      controller: result,
-      name: result.name,
-    };
+  if (!result || typeof result !== 'object') {
+    throw new TypeError('options must be an object');
   }
   if (!result.controller ||
-    (typeof result.controller !== 'object' && typeof result.controller !== 'function')) {
-    throw new TypeError('controller must be set as js object or es6 class');
+    typeof result.controller !== 'object') {
+    throw new TypeError('controller must be set as js object');
   }
   if (!result.urls && !result.name) throw new TypeError('name needed if urls not present');
   if ((result.name && (typeof result.name !== 'string')) ||
@@ -61,28 +55,14 @@ function buildOptions(optsIn) {
   return result;
 }
 
-function buildRoutes(Controller, urls) {
-  const makeHandler = (method) => {
-    if (typeof Controller === 'function') {
-      if (method === 'constructor') throw new TypeError('cannot use constructor as handler');
-      const handlerMethod = Controller.prototype[method];
-      return typeof handlerMethod === 'function' ? (ctx, ...args) => { // first argument is ctx
-        const instance = new Controller();
-        instance.ctx = ctx;
-        // first argument needs to be this
-        return Controller.prototype[method].apply(instance, args);
-      } : undefined;
-    }
-    return Controller[method];
-  };
-
+function buildRoutes(controller, urls) {
   let result = [];
   urls.forEach((element) => {
     const methods = Object.keys(element.handlers);
     result = result.concat(methods.map((method) => {
       const route = {};
       route.method = method.toLowerCase();
-      route.handler = makeHandler(element.handlers[method]);
+      route.handler = controller[element.handlers[method]];
       if (route.method === 'delete') route.method = 'del';
       route.path = element.path;
       return route;

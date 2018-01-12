@@ -37,33 +37,6 @@ module.exports = {
 };
 ```
 
-With es6 class:
-
-`Don't save application data in "this", it won't survive across requests`
-```js
-module.exports = class User {
-  list() {
-    this.ctx.body = 'user.list';
-  }
-
-  create() {
-    this.ctx.body = 'user.create';
-  }
-
-  fetch(id) {
-    this.ctx.body = `user.fetch ${id}`;
-  }
-
-  update(id) {
-    this.ctx.body = `user.update ${id}`;
-  }
-
-  remove(id) {
-    this.ctx.body = `user.remove ${id}`;
-  }
-}
-```
-
 Methods are optional, implement the ones needed.
 
 ## Middleware
@@ -96,9 +69,6 @@ const options = {
 }
 
 app.use(RE(options))
-
-/*if User is an es6 class*/
-app.use(RE(User))
 
 app.listen(3000)
 ```
