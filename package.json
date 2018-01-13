@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node example.js"
   },
-  "repository": "neilzheng/minires",
+  "repository": "neilzheng/yarmk",
   "keywords": [
     "\"koa\"",
     "\"rest\"",
