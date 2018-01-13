@@ -84,12 +84,6 @@ const miniOptions = {
 }
 
 /*
- for es6 class
- equivilent to above
- */
-const miniOptions = User
-
-/*
  full
 */
 const fullOptions = {
@@ -173,14 +167,6 @@ app.use(RE{
   }],
 })
 ```
-
-## Suggested usage for microservices:
-
-* Folow 1. and 2., use default config.
-* One controller is suggested in each app.
-* Keep protocol as HTTP. If HTTPS is needed, use proxy/load balancer.
-* Use koa middlewares as needed.
-* We don't touch request/response, so if you want if for regular web APP, help yourself. Just no benifits seen here.
 
 ## License
 
