@@ -39,6 +39,27 @@ module.exports = {
 
 Methods are optional, implement the ones needed.
 
+## this
+
+This in function is the object containing the function, if the function is not ES6 arrow function.
+
+```js
+// Controller
+module.exports = {
+  msg: 'Hello',
+
+  list(ctx) {
+    ctx.body = `${this.msg}, World!`
+    // Hello, World!
+  }
+
+  fetch: (ctx, id) => {
+    console.log(this.msg);
+    // undefined, because fetch is an ES6 arrow function
+  }
+}
+```
+
 ## Middleware
 
 By default, each controller provides two url matches, one for list/create (plural), one singular form for others. Example for users:

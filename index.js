@@ -63,6 +63,7 @@ function buildRoutes(controller, urls) {
       const route = {};
       route.method = method.toLowerCase();
       route.handler = controller[element.handlers[method]];
+      if (route.handler) route.handler = route.handler.bind(controller);
       if (route.method === 'delete') route.method = 'del';
       route.path = element.path;
       return route;

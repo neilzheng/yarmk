@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "description": "Yet Another Restful api Middleware for Koa",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node example.js"
+    "test": "nyc --reporter=html mocha --exit"
   },
   "keywords": [
     "\"koa\"",
@@ -19,8 +18,13 @@
     "koa-route": "^3.2.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^4.6.1",
     "eslint-config-airbnb-base": "^12.0.0",
-    "eslint-plugin-import": "^2.7.0"
+    "eslint-plugin-import": "^2.7.0",
+    "koa": "^2.5.2",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1",
+    "supertest": "^3.1.0"
   }
 }
