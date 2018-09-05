@@ -3,32 +3,36 @@ const request = require('supertest');
 const { expect } = require('chai');
 
 const TestController = {
-  action1(method) {
+  handle1(method) {
     return { method };
   },
 
-  action2(method, id) {
+  handle2(method, id) {
     return { method, id };
   },
 
   list(ctx) {
-    ctx.body = this.action1('list');
+    ctx.body = this.handle1('list');
   },
 
   create(ctx) {
-    ctx.body = this.action1('create');
+    ctx.body = this.handle1('create');
   },
 
   fetch(ctx, id) {
-    ctx.body = this.action2('fetch', id);
+    ctx.body = this.handle2('fetch', id);
   },
 
   update(ctx, id) {
-    ctx.body = this.action2('update', id);
+    ctx.body = this.handle2('update', id);
   },
 
   remove(ctx, id) {
-    ctx.body = this.action2('remove', id);
+    ctx.body = this.handle2('remove', id);
+  },
+
+  action(ctx, id) {
+    ctx.body = this.handle2('action', id);
   }
 };
 
@@ -69,6 +73,12 @@ describe('test restful api contructed by mini options', () => {
   it('should remove', async () => {
     const res = await agent.delete('/test/123');
     expect(res.body.method).to.eq('remove');
+    expect(res.body.id).to.eq('123');
+  });
+
+  it('should action', async () => {
+    const res = await agent.put('/test/123');
+    expect(res.body.method).to.eq('action');
     expect(res.body.id).to.eq('123');
   });
 

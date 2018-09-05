@@ -38,14 +38,15 @@ function buildOptions(optsIn) {
         GET: 'fetch',
         PATCH: 'update',
         DELETE: 'remove',
-      },
+        PUT: 'action'
+      }
     };
     const url2 = {
       path: names[1],
       handlers: {
         POST: 'create',
-        GET: 'list',
-      },
+        GET: 'list'
+      }
     };
 
     result.urls.push(url1);
