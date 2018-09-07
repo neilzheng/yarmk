@@ -1,8 +1,28 @@
 const Router = require('koa-route');
 const Compose = require('koa-compose');
 
+function mergeUrls(impUrls, expUrls) {
+  if (!impUrls) return expUrls;
+  if (!expUrls) return impUrls;
+
+  const result = [...impUrls];
+  for (let i = 0; i < expUrls.length; i++) {
+    let j;
+    for (j = 0; j < result.length; j++) {
+      if (result[j].path === expUrls[i].path) {
+        result[j].handlers = { ...result[j].handlers, ...expUrls[i].handlers };
+        break;
+      }
+    }
+    if (j === result.length) result.push(expUrls[i]);
+  }
+
+  return result;
+}
+
 function buildOptions(optsIn) {
-  const result = optsIn;
+  const result = JSON.parse(JSON.stringify(optsIn));
+  result.controller = optsIn.controller;
 
   if (!result || typeof result !== 'object') {
     throw new TypeError('options must be an object');
@@ -11,10 +31,10 @@ function buildOptions(optsIn) {
     typeof result.controller !== 'object') {
     throw new TypeError('controller must be set as js object');
   }
-  if (!result.urls && !result.name) throw new TypeError('name needed if urls not present');
-  if ((result.name && (typeof result.name !== 'string')) ||
+  if (!result.urls && !result.path) throw new TypeError('path needed if urls not present');
+  if ((result.path && (typeof result.path !== 'string')) ||
     (result.index && typeof result.index !== 'string')) {
-    throw new TypeError('name must be a string & index must be string');
+    throw new TypeError('path must be a string & index must be string');
   }
   if (result.urls && (!Array.isArray(result.urls) || result.urls.length === 0)) {
     throw new TypeError('urls must be a non-empty array');
@@ -24,16 +44,19 @@ function buildOptions(optsIn) {
       if (!data.path || typeof data.path !== 'string' ||
         typeof data.handlers !== 'object') {
         throw new TypeError('path must be a string, handlers must be methods keyed object');
+      } else if (data.path.endsWith('/')) {
+        throw new TypeError('path should not ends with /');
       }
     });
   }
 
-  if (!result.urls) {
+  const impUrls = [];
+
+  if (result.path) {
     if (!result.index) result.index = ':id([\\w\\-\\_]+)';
-    const names = [`/${result.name}/${result.index}`, `/${result.name}`];
-    result.urls = [];
+    const paths = [`${result.path}/${result.index}`, `${result.path}`];
     const url1 = {
-      path: names[0],
+      path: paths[0],
       handlers: {
         GET: 'fetch',
         PATCH: 'update',
@@ -42,16 +65,18 @@ function buildOptions(optsIn) {
       }
     };
     const url2 = {
-      path: names[1],
+      path: paths[1],
       handlers: {
         POST: 'create',
         GET: 'list'
       }
     };
 
-    result.urls.push(url1);
-    result.urls.push(url2);
+    impUrls.push(url1);
+    impUrls.push(url2);
   }
+
+  result.urls = mergeUrls(impUrls, result.urls);
 
   return result;
 }

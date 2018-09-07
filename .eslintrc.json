@@ -2,6 +2,7 @@
     "extends": "airbnb-base",
     "rules": {
         "no-useless-escape": 0,
-        "comma-dangle": 0
+        "comma-dangle": 0,
+        "no-plusplus": 0
     }
 }

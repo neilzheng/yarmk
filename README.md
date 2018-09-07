@@ -10,6 +10,7 @@ In RESET URLs, most endpoints have these patterns:
 * fetch:  GET /user/:id
 * update: PATCH /user/:id
 * remove: DELETE /user/:id
+* action: PUT /user/:id
 
 So, we make this our default rule for designing REST API.
 
@@ -34,6 +35,9 @@ module.exports = {
   remove(ctx, id) {
     ctx.body = `user.remove ${id}`;
   },
+  action(ctx, id) {
+    ctx.body = `user.action ${id}`;
+  }
 };
 ```
 
@@ -79,13 +83,14 @@ const app = new Koa()
 const options = {
   /*handlers*/
   controller: User,
-  name: 'user',
+  path: '/user',
 }
 
 /*if username is prefered*/
+/*the generated url is /user/:username(\\w+)*/
 const options = {
   controller: User,
-  name: 'user',
+  name: '/user',
   index: ':username(\\w+)',
 }
 
@@ -101,7 +106,7 @@ app.listen(3000)
 */
 const miniOptions = {
   controller: User,
-  name: 'user',
+  path: '/user',
 }
 
 /*
@@ -112,13 +117,14 @@ const fullOptions = {
   controller: User,
   /*Endpoint Path for building URL, optional*/
   /*Required if controller is not es6 class and urls not set*/
-  /*Ignored if urls set''*/
-  name: 'user',
+  /*If set, common urls are generated.*/
+  path: '/user',
   /*Index for Fetching Single Object, optional*/
   /*Default is ':id(\\d+)'*/
   /*Ignored if urls set*/
   index: ':id(\\d+)',
   /*Routes, optional, default as folowing code*/
+  /*This section is merged with auto generated urls.*/
   urls: [{
       /*required in urls, NOTE: urls itself is optionsl*/
       /*Override default when exists.*/
@@ -188,6 +194,10 @@ app.use(RE{
   }],
 })
 ```
+
+## Remarks
+
+* If path exists in both url item and upper scope, an implicit route list is generated, and merged with custom urls.
 
 ## License
 

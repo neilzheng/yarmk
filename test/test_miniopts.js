@@ -36,14 +36,14 @@ const TestController = {
   }
 };
 
-describe('test restful api contructed by mini options', () => {
+describe('test restful api contructed by mini options (fully implicit)', () => {
   let agent;
   let server;
 
   before(() => {
     server = MakeServer({
       controller: TestController,
-      name: 'test'
+      path: '/test'
     });
     agent = request.agent(server);
   });
