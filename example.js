@@ -27,7 +27,8 @@ const User = {
 
 app.use(RE({
   controller: User,
-  name: 'user'
+  path: '/user',
+  index: ':username([\\w\\-\\_]+)'
 }));
 
 app.listen(3000);

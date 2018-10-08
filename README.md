@@ -90,7 +90,7 @@ const options = {
 /*the generated url is /user/:username(\\w+)*/
 const options = {
   controller: User,
-  name: '/user',
+  path: '/user',
   index: ':username(\\w+)',
 }
 
