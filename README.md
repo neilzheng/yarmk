@@ -7,10 +7,11 @@ In RESET URLs, most endpoints have these patterns:
 
 * list:   GET /user
 * create: POST /user
+* action: PUT /user/:action_name
 * fetch:  GET /user/:id
 * update: PATCH /user/:id
 * remove: DELETE /user/:id
-* action: PUT /user/:id
+* action: PUT /user/:id/:action_name
 
 So, we make this our default rule for designing REST API.
 
@@ -26,6 +27,9 @@ module.exports = {
   create(ctx) {
     ctx.body = 'user.create';
   },
+  batchAction(ctx, action) {
+    ctx.body = `user.batchAction ${action}`;
+  },
   fetch(ctx, id) {
     ctx.body = `user.fetch ${id}`;
   },
@@ -35,8 +39,8 @@ module.exports = {
   remove(ctx, id) {
     ctx.body = `user.remove ${id}`;
   },
-  action(ctx, id) {
-    ctx.body = `user.action ${id}`;
+  singleAction(ctx, id, action) {
+    ctx.body = `user.action ${id} ${action}`;
   }
 };
 ```

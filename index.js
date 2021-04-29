@@ -54,26 +54,39 @@ function buildOptions(optsIn) {
 
   if (result.path) {
     if (!result.index) result.index = ':id([\\w\\-\\_]+)';
-    const paths = [`${result.path}/${result.index}`, `${result.path}`];
+    const paths = [`${result.path}/${result.index}`, `${result.path}/${result.index}/:action([\\w\\-\\_]+)`, `${result.path}`, `${result.path}/:action([\\w\\-\\_]+)`];
     const url1 = {
       path: paths[0],
       handlers: {
         GET: 'fetch',
         PATCH: 'update',
-        DELETE: 'remove',
-        PUT: 'action'
+        DELETE: 'remove'
       }
     };
     const url2 = {
       path: paths[1],
       handlers: {
+        PUT: 'singleAction'
+      }
+    };
+    const url3 = {
+      path: paths[2],
+      handlers: {
         POST: 'create',
         GET: 'list'
+      }
+    };
+    const url4 = {
+      path: paths[3],
+      handlers: {
+        PUT: 'batchAction',
       }
     };
 
     impUrls.push(url1);
     impUrls.push(url2);
+    impUrls.push(url3);
+    impUrls.push(url4);
   }
 
   result.urls = mergeUrls(impUrls, result.urls);

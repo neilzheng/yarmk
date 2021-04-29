@@ -11,12 +11,24 @@ const TestController = {
     return { method, id };
   },
 
+  handle3(method, action) {
+    return { method, action };
+  },
+
+  handle4(method, id, action) {
+    return { method, id, action };
+  },
+
   list(ctx) {
     ctx.body = this.handle1('list');
   },
 
   create(ctx) {
     ctx.body = this.handle1('create');
+  },
+
+  batchAction(ctx, action) {
+    ctx.body = this.handle3('batchAction', action);
   },
 
   fetch(ctx, id) {
@@ -31,8 +43,8 @@ const TestController = {
     ctx.body = this.handle2('remove', id);
   },
 
-  action(ctx, id) {
-    ctx.body = this.handle2('action', id);
+  singleAction(ctx, id, action) {
+    ctx.body = this.handle4('singleAction', id, action);
   }
 };
 
@@ -58,6 +70,12 @@ describe('test restful api contructed by mini options (fully implicit)', () => {
     expect(res.body.method).to.eq('create');
   });
 
+  it('should batchAction', async () => {
+    const res = await agent.put('/test/test');
+    expect(res.body.method).to.eq('batchAction');
+    expect(res.body.action).to.eq('test');
+  });
+
   it('should fetch', async () => {
     const res = await agent.get('/test/123');
     expect(res.body.method).to.eq('fetch');
@@ -76,10 +94,11 @@ describe('test restful api contructed by mini options (fully implicit)', () => {
     expect(res.body.id).to.eq('123');
   });
 
-  it('should action', async () => {
-    const res = await agent.put('/test/123');
-    expect(res.body.method).to.eq('action');
+  it('should singleAction', async () => {
+    const res = await agent.put('/test/123/test');
+    expect(res.body.method).to.eq('singleAction');
     expect(res.body.id).to.eq('123');
+    expect(res.body.action).to.eq('test');
   });
 
   after(() => {
